@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 public class Contract {
@@ -21,6 +22,9 @@ public class Contract {
     private BigDecimal contract_cost;
     private String contract_status;
     private int contractor_id;
+    private boolean isDeleted = false; // Soft delete flag
+
+    private LocalDateTime deletedAt; // Timestamp of deletion
 
     public int getC_id() {
         return c_id;
@@ -94,6 +98,22 @@ public class Contract {
         this.contractor_id = contractor_id;
     }
 
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
     @Override
     public String toString() {
         return "Contract{" +
@@ -106,6 +126,8 @@ public class Contract {
                 ", contract_cost=" + contract_cost +
                 ", contract_status='" + contract_status + '\'' +
                 ", contractor_id=" + contractor_id +
+                ", isDeleted=" + isDeleted +
+                ", deletedAt=" + deletedAt +
                 '}';
     }
 }

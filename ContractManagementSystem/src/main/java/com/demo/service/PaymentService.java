@@ -5,7 +5,9 @@ import com.demo.repository.PaymentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PaymentService {
@@ -51,6 +53,18 @@ public class PaymentService {
     }
     public void deletePaymentByIDs(List<Integer> paymentIDs){
         paymentRepo.deleteAllById(paymentIDs);
+    }
+    public void softDeletePayment(int id){
+        Optional<Payment> payment=paymentRepo.findById(id);
+        if(payment.isPresent()){
+            Payment existingPayment=payment.get();
+            existingPayment.setDeleted(true);
+            existingPayment.setDeletedAt(LocalDateTime.now());
+            paymentRepo.save(existingPayment);
+        }
+        else {
+            throw new RuntimeException("Payment Not Found");
+        }
     }
 
 }

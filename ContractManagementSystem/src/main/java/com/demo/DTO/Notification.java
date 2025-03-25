@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 public class Notification {
@@ -19,6 +20,9 @@ public class Notification {
     private String n_title;
     private String n_description;
     private String filePathURl;
+    private boolean isDeleted = false; // Soft delete flag
+
+    private LocalDateTime deletedAt; // Timestamp of deletion
 
     public String getFilePathURl() {
         return filePathURl;
@@ -84,6 +88,22 @@ public class Notification {
         this.n_description = n_description;
     }
 
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
     @Override
     public String toString() {
         return "Notification{" +
@@ -95,6 +115,8 @@ public class Notification {
                 ", n_title='" + n_title + '\'' +
                 ", n_description='" + n_description + '\'' +
                 ", filePathURl='" + filePathURl + '\'' +
+                ", isDeleted=" + isDeleted +
+                ", deletedAt=" + deletedAt +
                 '}';
     }
 }

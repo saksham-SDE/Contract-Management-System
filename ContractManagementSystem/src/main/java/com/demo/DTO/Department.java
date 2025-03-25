@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.time.LocalDateTime;
+
 @Entity
 public class Department {
     @Id
@@ -13,6 +15,9 @@ public class Department {
     private String dep_name;
     private String description;
     private String dep_address;
+    private boolean isDeleted = false; // Soft delete flag
+
+    private LocalDateTime deletedAt; // Timestamp of deletion
 
     public int getDep_id() {
         return dep_id;
@@ -46,6 +51,22 @@ public class Department {
         this.dep_address = dep_address;
     }
 
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
     @Override
     public String toString() {
         return "Department{" +
@@ -53,6 +74,8 @@ public class Department {
                 ", dep_name='" + dep_name + '\'' +
                 ", description='" + description + '\'' +
                 ", dep_address='" + dep_address + '\'' +
+                ", isDeleted=" + isDeleted +
+                ", deletedAt=" + deletedAt +
                 '}';
     }
 }

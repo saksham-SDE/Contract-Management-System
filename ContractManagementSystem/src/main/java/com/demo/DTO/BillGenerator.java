@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 public class BillGenerator {
@@ -19,6 +20,9 @@ public class BillGenerator {
     private String status;
     private LocalDate bill_date;
     private String file_path_url;
+    private boolean isDeleted = false; // Soft delete flag
+
+    private LocalDateTime deletedAt; // Timestamp of deletion
 
     public int getBill_id() {
         return bill_id;
@@ -76,9 +80,25 @@ public class BillGenerator {
         this.file_path_url = file_path_url;
     }
 
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
     @Override
     public String toString() {
-        return "BillGen{" +
+        return "BillGenerator{" +
                 "bill_id=" + bill_id +
                 ", w_id=" + w_id +
                 ", contractor_id=" + contractor_id +
@@ -86,6 +106,8 @@ public class BillGenerator {
                 ", status='" + status + '\'' +
                 ", bill_date=" + bill_date +
                 ", file_path_url='" + file_path_url + '\'' +
+                ", isDeleted=" + isDeleted +
+                ", deletedAt=" + deletedAt +
                 '}';
     }
 }

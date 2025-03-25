@@ -5,7 +5,9 @@ import com.demo.repository.WorkOrderRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WorkOrderService {
@@ -51,5 +53,17 @@ public class WorkOrderService {
     }
     public void deleteWorkOrderByIDs(List<Integer> workorderIDs){
         workOrderRepo.deleteAllById(workorderIDs);
+    }
+    public void softDeleteWorkOrder(int id){
+        Optional<WorkOrder> workOrder=workOrderRepo.findById(id);
+        if(workOrder.isPresent()){
+            WorkOrder existingWorkOrder=workOrder.get();
+            existingWorkOrder.setDeleted(true);
+            existingWorkOrder.setDeletedAt(LocalDateTime.now());
+            workOrderRepo.save(existingWorkOrder);
+        }
+        else {
+            throw new RuntimeException("Work-Order Not Found");
+        }
     }
 }

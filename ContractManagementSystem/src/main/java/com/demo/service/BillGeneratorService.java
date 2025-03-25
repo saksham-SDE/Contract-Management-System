@@ -5,7 +5,9 @@ import com.demo.repository.BillGeneratorRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BillGeneratorService {
@@ -55,5 +57,16 @@ public class BillGeneratorService {
     public void deleteBillsByIds(List<Integer> billIDs){
         billGeneratorRepo.deleteAllById(billIDs);
     }
-
+    public void softDeleteBill(int id){
+        Optional<BillGenerator> bill=billGeneratorRepo.findById(id);
+        if(bill.isPresent()){
+            BillGenerator existingBill=bill.get();
+            existingBill.setDeleted(true);
+            existingBill.setDeletedAt(LocalDateTime.now());
+            billGeneratorRepo.save(existingBill);
+        }
+        else{
+            throw new RuntimeException("Bill Not Found");
+        }
+    }
 }

@@ -2,6 +2,7 @@ package com.demo.controller;
 import com.demo.DTO.Contractor;
 import com.demo.service.ContractorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -64,6 +65,12 @@ public class ContractorController {
     public ResponseEntity<?> deleteContractors(List<Integer> contractors,@RequestHeader(name="Accept-Language",required = false)Locale locale){
         service.deleteContractorByIDs(contractors);
         String message= messageSource.getMessage("contractor.deleted",null,locale);
+        return ResponseEntity.ok(message);
+    }
+    @DeleteMapping("/soft-delete/{id}")
+    public ResponseEntity<String> softDeleteContractor(@PathVariable int id, @RequestHeader(name="Accept-Language",required = false)Locale locale){
+        service.softDeleteContractor(id);
+        String message=messageSource.getMessage("contractor.deleted",null,locale);
         return ResponseEntity.ok(message);
     }
 }

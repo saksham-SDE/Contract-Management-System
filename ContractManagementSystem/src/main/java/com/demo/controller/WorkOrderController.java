@@ -59,5 +59,11 @@ public class WorkOrderController {
         String message=messageSource.getMessage("workorder.deleted",null,locale);
         return ResponseEntity.ok(message);
     }
+    @DeleteMapping("/soft-delete/{id}")
+    public ResponseEntity<String> softDeleteWorkOrder(@PathVariable int id,@RequestHeader(name="Accept-Language",required = false)Locale locale){
+        service.softDeleteWorkOrder(id);
+        String message=messageSource.getMessage("workorder.deleted",null,locale);
+        return ResponseEntity.ok(message);
+    }
 
 }

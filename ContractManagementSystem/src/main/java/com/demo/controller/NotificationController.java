@@ -3,6 +3,7 @@ package com.demo.controller;
 import com.demo.DTO.Notification;
 import com.demo.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -59,6 +60,12 @@ public class NotificationController {
     @DeleteMapping("/list")
     public ResponseEntity<?> deleteNotifications(List<Integer> notifications,@RequestHeader(name="Accept-Language",required = false)Locale locale){
         service.deleteNotificationByIDs(notifications);
+        String message=messageSource.getMessage("notification.deleted",null,locale);
+        return ResponseEntity.ok(message);
+    }
+    @DeleteMapping("/soft-delete/{id}")
+    public ResponseEntity<String > softDeleteNotification(@PathVariable int id, @RequestHeader(name = "Accept-Language",required = false)Locale locale){
+        service.softDeleteNotification(id);
         String message=messageSource.getMessage("notification.deleted",null,locale);
         return ResponseEntity.ok(message);
     }

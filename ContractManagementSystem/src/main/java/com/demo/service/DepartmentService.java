@@ -5,7 +5,9 @@ import com.demo.repository.DepartmentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DepartmentService {
@@ -46,5 +48,17 @@ public class DepartmentService {
     }
     public void deleteDepartmentByIDs(List<Integer> departmentIDs){
         departmentRepo.deleteAllById(departmentIDs);
+    }
+    public void softDeleteDepartment(int id){
+        Optional<Department> department=departmentRepo.findById(id);
+        if(department.isPresent()){
+            Department existingDepartment=department.get();
+            existingDepartment.setDeleted(true);
+            existingDepartment.setDeletedAt(LocalDateTime.now());
+            departmentRepo.save(existingDepartment);
+        }
+        else{
+            throw new RuntimeException("Department Not Found");
+        }
     }
 }

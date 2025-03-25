@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 public class Contractor {
@@ -18,6 +19,9 @@ public class Contractor {
     private String address;
     private String license_no;
     private LocalDate register_date;
+    private boolean isDeleted = false; // Soft delete flag
+
+    private LocalDateTime deletedAt; // Timestamp of deletion
 
     public int getContractor_id() {
         return contractor_id;
@@ -75,6 +79,22 @@ public class Contractor {
         this.register_date = register_date;
     }
 
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
     @Override
     public String toString() {
         return "Contractor{" +
@@ -85,6 +105,8 @@ public class Contractor {
                 ", address='" + address + '\'' +
                 ", license_no='" + license_no + '\'' +
                 ", register_date=" + register_date +
+                ", isDeleted=" + isDeleted +
+                ", deletedAt=" + deletedAt +
                 '}';
     }
 }

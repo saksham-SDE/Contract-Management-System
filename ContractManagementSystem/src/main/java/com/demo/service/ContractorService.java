@@ -5,6 +5,7 @@ import com.demo.repository.ContractorRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,6 +63,18 @@ public class ContractorService {
     }
     public void deleteContractorByIDs(List<Integer> contractorIDs){
         contractorRepo.deleteAllById(contractorIDs);
+    }
+    public void softDeleteContractor(int id){
+        Optional<Contractor> contractor=contractorRepo.findById(id);
+        if(contractor.isPresent()){
+            Contractor existingContractor=contractor.get();
+            existingContractor.setDeleted(true);
+            existingContractor.setDeletedAt(LocalDateTime.now());
+            contractorRepo.save(existingContractor);
+        }
+        else{
+            throw new RuntimeException("Contractor Not Found");
+        }
     }
 
 }

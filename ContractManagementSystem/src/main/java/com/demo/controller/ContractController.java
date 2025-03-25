@@ -62,5 +62,11 @@ public class ContractController {
         String message=messageSource.getMessage("contract.deleted",null,locale);
         return ResponseEntity.ok(message);
     }
+    @DeleteMapping("/soft-delete/{id}")
+    public ResponseEntity<String> softDeleteContract(@PathVariable int id,@RequestHeader(name = "Accept-Language",required = false)Locale locale) {
+        service.softDeleteContract(id);
+        String message=messageSource.getMessage("contract.deleted",null,locale);
+        return ResponseEntity.ok(message);
+    }
 
 }

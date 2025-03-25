@@ -2,10 +2,13 @@ package com.demo.service;
 
 import com.demo.DTO.Notification;
 import com.demo.repository.NotificationRepo;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class NotificationService {
@@ -57,5 +60,17 @@ public class NotificationService {
     }
     public void deleteNotificationByIDs(List<Integer> notificationIDs){
         notificationRepo.deleteAllById(notificationIDs);
+    }
+    public void softDeleteNotification(int id){
+        Optional<Notification> notification=notificationRepo.findById(id);
+        if(notification.isPresent()){
+            Notification existingNotification=notification.get();
+            existingNotification.setDeleted(true);
+            existingNotification.setDeletedAt(LocalDateTime.now());
+            notificationRepo.save(existingNotification);
+        }
+        else {
+            throw new RuntimeException("Notification Not Found");
+        }
     }
 }
