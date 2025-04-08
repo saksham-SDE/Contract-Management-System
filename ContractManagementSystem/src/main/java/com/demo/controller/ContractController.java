@@ -3,7 +3,9 @@ import com.demo.DTO.Contract;
 import com.demo.service.ContractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -68,5 +70,4 @@ public class ContractController {
         String message=messageSource.getMessage("contract.deleted",null,locale);
         return ResponseEntity.ok(message);
     }
-
 }
