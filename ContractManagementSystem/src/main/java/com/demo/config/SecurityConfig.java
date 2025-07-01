@@ -20,6 +20,8 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -30,6 +32,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http)throws Exception{
         return http
+                .cors(cors -> cors.configurationSource(request -> {
+                    var config = new org.springframework.web.cors.CorsConfiguration();
+                    config.setAllowedOrigins(List.of("http://localhost:3000"));
+                    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+                    config.setAllowedHeaders(List.of("*"));
+                    config.setAllowCredentials(true);
+                    return config;
+                }))
                 .csrf(customizer->customizer.disable())
                 .authorizeHttpRequests(request->request
                         .requestMatchers("/api/users/register","/api/users/login")
@@ -41,20 +51,7 @@ public class SecurityConfig {
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-    @Bean
-    public UserDetailsService userDetailsService(){
-        UserDetails user1= User
-                .withUsername("AB")
-                .password("25")
-                .roles("USER")
-                .build();
-        UserDetails user2=User
-                .withUsername("Saksham")
-                .password("21")
-                .roles("ADMIN")
-                .build();
-        return new InMemoryUserDetailsManager(user2,user1);
-    }
+
     @Bean
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider provider=new DaoAuthenticationProvider();
