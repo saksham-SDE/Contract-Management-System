@@ -9,5 +9,4 @@ import java.util.List;
 
 @Repository
 public interface EmployeeRepo extends JpaRepository<Employee,Integer> {
-    List<Employee> findByIsDeletedFalse(); // Fetch only non-deleted contracts
 }

@@ -9,5 +9,4 @@ import java.util.List;
 
 @Repository
 public interface NotificationRepo extends JpaRepository<Notification,Integer> {
-    List<Notification> findByIsDeletedFalse(); // Fetch only non-deleted contracts
 }

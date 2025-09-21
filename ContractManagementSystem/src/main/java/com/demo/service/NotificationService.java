@@ -61,16 +61,5 @@ public class NotificationService {
     public void deleteNotificationByIDs(List<Integer> notificationIDs){
         notificationRepo.deleteAllById(notificationIDs);
     }
-    public void softDeleteNotification(int id){
-        Optional<Notification> notification=notificationRepo.findById(id);
-        if(notification.isPresent()){
-            Notification existingNotification=notification.get();
-            existingNotification.setDeleted(true);
-            existingNotification.setDeletedAt(LocalDateTime.now());
-            notificationRepo.save(existingNotification);
-        }
-        else {
-            throw new RuntimeException("Notification Not Found");
-        }
-    }
+
 }

@@ -22,7 +22,7 @@ public class Contract {
     private BigDecimal contract_cost;
     private String contract_status;
     private int contractor_id;
-    private boolean isDeleted = false; // Soft delete flag
+
 
     private LocalDateTime deletedAt; // Timestamp of deletion
 
@@ -98,13 +98,6 @@ public class Contract {
         this.contractor_id = contractor_id;
     }
 
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
-    }
 
     public LocalDateTime getDeletedAt() {
         return deletedAt;
@@ -126,7 +119,6 @@ public class Contract {
                 ", contract_cost=" + contract_cost +
                 ", contract_status='" + contract_status + '\'' +
                 ", contractor_id=" + contractor_id +
-                ", isDeleted=" + isDeleted +
                 ", deletedAt=" + deletedAt +
                 '}';
     }

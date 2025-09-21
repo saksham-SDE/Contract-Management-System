@@ -63,11 +63,4 @@ public class BillGeneratorController {
         String message=messageSource.getMessage("bill.deleted",null,locale);
         return ResponseEntity.ok(message);
     }
-    @DeleteMapping("/soft-delete/{id}")
-    public ResponseEntity<String> softDeleteBill(@PathVariable int id,@RequestHeader(name="Accept-Language",required = false)Locale locale){
-        service.softDeleteBill(id);
-        String message=messageSource.getMessage("bill.deleted",null,locale);
-        return ResponseEntity.ok(message);
-    }
-
 }

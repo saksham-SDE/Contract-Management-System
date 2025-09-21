@@ -20,7 +20,7 @@ public class Notification {
     private String n_title;
     private String n_description;
     private String filePathURl;
-    private boolean isDeleted = false; // Soft delete flag
+
 
     private LocalDateTime deletedAt; // Timestamp of deletion
 
@@ -88,13 +88,6 @@ public class Notification {
         this.n_description = n_description;
     }
 
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
-    }
 
     public LocalDateTime getDeletedAt() {
         return deletedAt;
@@ -115,7 +108,6 @@ public class Notification {
                 ", n_title='" + n_title + '\'' +
                 ", n_description='" + n_description + '\'' +
                 ", filePathURl='" + filePathURl + '\'' +
-                ", isDeleted=" + isDeleted +
                 ", deletedAt=" + deletedAt +
                 '}';
     }

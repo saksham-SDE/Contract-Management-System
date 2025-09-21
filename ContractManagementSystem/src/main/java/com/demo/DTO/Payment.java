@@ -18,7 +18,6 @@ public class Payment {
     private BigDecimal amount;
     private String p_status;
     private LocalDateTime p_time;
-    private boolean isDeleted = false; // Soft delete flag
 
     private LocalDateTime deletedAt; // Timestamp of deletion
 
@@ -70,13 +69,6 @@ public class Payment {
         this.p_time = p_time;
     }
 
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
-    }
 
     public LocalDateTime getDeletedAt() {
         return deletedAt;
@@ -95,7 +87,6 @@ public class Payment {
                 ", amount=" + amount +
                 ", p_status='" + p_status + '\'' +
                 ", p_time=" + p_time +
-                ", isDeleted=" + isDeleted +
                 ", deletedAt=" + deletedAt +
                 '}';
     }

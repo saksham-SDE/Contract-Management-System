@@ -49,16 +49,5 @@ public class DepartmentService {
     public void deleteDepartmentByIDs(List<Integer> departmentIDs){
         departmentRepo.deleteAllById(departmentIDs);
     }
-    public void softDeleteDepartment(int id){
-        Optional<Department> department=departmentRepo.findById(id);
-        if(department.isPresent()){
-            Department existingDepartment=department.get();
-            existingDepartment.setDeleted(true);
-            existingDepartment.setDeletedAt(LocalDateTime.now());
-            departmentRepo.save(existingDepartment);
-        }
-        else{
-            throw new RuntimeException("Department Not Found");
-        }
-    }
+
 }

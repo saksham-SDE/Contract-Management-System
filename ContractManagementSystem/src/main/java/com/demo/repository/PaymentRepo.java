@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface PaymentRepo extends JpaRepository<Payment,Integer> {
-    List<Payment> findByIsDeletedFalse(); // Fetch only non-deleted contracts
+
 }

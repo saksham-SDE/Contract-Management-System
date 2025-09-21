@@ -20,7 +20,7 @@ public class BillGenerator {
     private String status;
     private LocalDate bill_date;
     private String file_path_url;
-    private boolean isDeleted = false; // Soft delete flag
+
 
     private LocalDateTime deletedAt; // Timestamp of deletion
 
@@ -80,13 +80,6 @@ public class BillGenerator {
         this.file_path_url = file_path_url;
     }
 
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
-    }
 
     public LocalDateTime getDeletedAt() {
         return deletedAt;
@@ -106,7 +99,6 @@ public class BillGenerator {
                 ", status='" + status + '\'' +
                 ", bill_date=" + bill_date +
                 ", file_path_url='" + file_path_url + '\'' +
-                ", isDeleted=" + isDeleted +
                 ", deletedAt=" + deletedAt +
                 '}';
     }

@@ -11,5 +11,4 @@ import java.util.List;
 
 @Repository
 public interface DepartmentRepo extends JpaRepository<Department,Integer> {
-    List<Department> findByIsDeletedFalse(); // Fetch only non-deleted contracts
 }

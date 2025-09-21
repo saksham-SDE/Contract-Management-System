@@ -1,76 +1,50 @@
 package com.demo.controller;
-import com.demo.DTO.Contractor;
+
+import com.demo.VO.ContractorVo;
 import com.demo.service.ContractorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
-import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/contractors")
 public class ContractorController {
+
     @Autowired
     private ContractorService service;
-    @Autowired
-    private MessageSource messageSource;
 
-    // Get All Contractors
+    // Get all contractors
     @GetMapping
-    public ResponseEntity<List<Contractor>> getAllContractors() {
-        return ResponseEntity.ok(service.getAllContractor());
+    public ResponseEntity<List<ContractorVo>> getAllContractors() {
+        return ResponseEntity.ok(service.getAllContractorsVo());
     }
 
-    // Get Contractor
+    // Get contractor by ID
     @GetMapping("/{id}")
-    public ResponseEntity<Contractor> getContractor(@PathVariable int id) {
-        return ResponseEntity.of(service.getContractorById(id));
+    public ResponseEntity<ContractorVo> getContractor(@PathVariable int id) {
+        ContractorVo contractor = service.getContractorVoById(id);
+        return contractor != null ? ResponseEntity.ok(contractor) : ResponseEntity.notFound().build();
     }
 
-    // Add Contractor
+    // Add contractor
     @PostMapping
-    public ResponseEntity<?> addContractor(@RequestBody Contractor contractor, @RequestHeader(name="Accept-Language",required = false)Locale locale) {
-        service.addContractor(contractor);
-        String message=messageSource.getMessage("contractor.created",null,locale);
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", message);
-        response.put("contractor", contractor);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<ContractorVo> addContractor(@RequestBody ContractorVo contractorVo) {
+        return ResponseEntity.ok(service.addContractorUserFriendly(contractorVo));
     }
 
-    // Delete Contractor
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteContractor(@PathVariable int id,@RequestHeader(name = "Accept-Language",required = false)Locale locale) {
-        service.deleteContractorById(id);
-        String message=messageSource.getMessage("contractor.deleted",null,locale);
-        return ResponseEntity.ok(message);
-    }
-
-    // Update Contractor Details
+    // Update contractor
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateContractor(@PathVariable int id, @RequestBody Contractor contractor,@RequestHeader(name="Accept-Language",required = false)Locale locale) {
-        service.updateContractor(id, contractor);
-        String message=messageSource.getMessage("contractor.updated",null,locale);
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", message);
-        response.put("contractor", contractor);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<ContractorVo> updateContractor(@PathVariable int id, @RequestBody ContractorVo contractorVo) {
+        ContractorVo updated = service.updateContractorUserFriendly(id, contractorVo);
+        return updated != null ? ResponseEntity.ok(updated) : ResponseEntity.notFound().build();
     }
-    @DeleteMapping("/list")
-    public ResponseEntity<?> deleteContractors(List<Integer> contractors,@RequestHeader(name="Accept-Language",required = false)Locale locale){
-        service.deleteContractorByIDs(contractors);
-        String message= messageSource.getMessage("contractor.deleted",null,locale);
-        return ResponseEntity.ok(message);
-    }
-    @DeleteMapping("/soft-delete/{id}")
-    public ResponseEntity<String> softDeleteContractor(@PathVariable int id, @RequestHeader(name="Accept-Language",required = false)Locale locale){
-        service.softDeleteContractor(id);
-        String message=messageSource.getMessage("contractor.deleted",null,locale);
-        return ResponseEntity.ok(message);
+
+    // Delete contractor
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteContractor(@PathVariable int id) {
+        service.deleteContractorById(id);
+        return ResponseEntity.noContent().build();
     }
 }

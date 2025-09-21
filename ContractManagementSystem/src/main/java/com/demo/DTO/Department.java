@@ -15,7 +15,7 @@ public class Department {
     private String dep_name;
     private String description;
     private String dep_address;
-    private boolean isDeleted = false; // Soft delete flag
+
 
     private LocalDateTime deletedAt; // Timestamp of deletion
 
@@ -51,13 +51,6 @@ public class Department {
         this.dep_address = dep_address;
     }
 
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
-    }
 
     public LocalDateTime getDeletedAt() {
         return deletedAt;
@@ -74,7 +67,6 @@ public class Department {
                 ", dep_name='" + dep_name + '\'' +
                 ", description='" + description + '\'' +
                 ", dep_address='" + dep_address + '\'' +
-                ", isDeleted=" + isDeleted +
                 ", deletedAt=" + deletedAt +
                 '}';
     }

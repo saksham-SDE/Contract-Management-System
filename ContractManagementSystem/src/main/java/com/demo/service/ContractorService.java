@@ -1,80 +1,59 @@
 package com.demo.service;
 
 import com.demo.DTO.Contractor;
+import com.demo.VO.ContractorVo;
 import com.demo.repository.ContractorRepo;
+import com.demo.utility.ContractorMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ContractorService {
+
     @Autowired
     private ContractorRepo contractorRepo;
-    //Retrieve all contractors from database
-    public List<Contractor> getAllContractor(){
-        return contractorRepo.findAll();
-    }
-    //Retrieve contractor by its id from database
-    public Optional<Contractor> getContractorById(int id){
-        return contractorRepo.findById(id);
-    }
-    //Add contractor to the database
-    public Contractor addContractor(Contractor contractor) {
-        if (contractorRepo.existsById(contractor.getContractor_id())) {
-            return null; // Contractor already exists
-        }
-        return contractorRepo.save(contractor); // Save new contractor
-    }
-    //Delete contractor by its id from database
-    public boolean deleteContractorById(int id){
-        if(contractorRepo.existsById(id)){
-        contractorRepo.deleteById(id);
-        return true;
-        }
-        return false;
-    }
-    //Update contractor details by its id in database
-    public Optional<Contractor> updateContractor(int id, Contractor updateContractor){
-        return contractorRepo.findById(id)
-                .map(contractor -> {
-                    if(updateContractor.getName()!=null){
-                        contractor.setName(updateContractor.getName());
-                    }
-                    if(updateContractor.getAddress()!=null){
-                        contractor.setAddress(updateContractor.getAddress());
-                    }
-                    if(updateContractor.getEmail()!=null){
-                        contractor.setEmail(updateContractor.getEmail());
-                    }
-                    if(updateContractor.getContact_no()!=null){
-                        contractor.setContact_no(updateContractor.getContact_no());
-                    }
-                    if(updateContractor.getLicense_no()!=null){
-                        contractor.setLicense_no(updateContractor.getLicense_no());
-                    }
-                    if(updateContractor.getRegister_date()!=null){
-                        contractor.setRegister_date(updateContractor.getRegister_date());
-                    }
-                    return contractorRepo.save(contractor);
-                });
-    }
-    public void deleteContractorByIDs(List<Integer> contractorIDs){
-        contractorRepo.deleteAllById(contractorIDs);
-    }
-    public void softDeleteContractor(int id){
-        Optional<Contractor> contractor=contractorRepo.findById(id);
-        if(contractor.isPresent()){
-            Contractor existingContractor=contractor.get();
-            existingContractor.setDeleted(true);
-            existingContractor.setDeletedAt(LocalDateTime.now());
-            contractorRepo.save(existingContractor);
-        }
-        else{
-            throw new RuntimeException("Contractor Not Found");
-        }
+
+    // Add contractor (user-friendly)
+    public ContractorVo addContractorUserFriendly(ContractorVo contractorVo) {
+        Contractor contractor = ContractorMapper.mapToEntity(contractorVo);
+        Contractor saved = contractorRepo.save(contractor);
+        return ContractorMapper.mapToVo(saved);
     }
 
+    // Update contractor (user-friendly)
+    public ContractorVo updateContractorUserFriendly(int id, ContractorVo contractorVo) {
+        return contractorRepo.findById(id).map(existing -> {
+            if (contractorVo.getName() != null) existing.setName(contractorVo.getName());
+            if (contractorVo.getEmail() != null) existing.setEmail(contractorVo.getEmail());
+            if (contractorVo.getContact_no() != null) existing.setContact_no(contractorVo.getContact_no());
+            if (contractorVo.getAddress() != null) existing.setAddress(contractorVo.getAddress());
+            if (contractorVo.getLicense_no() != null) existing.setLicense_no(contractorVo.getLicense_no());
+            if (contractorVo.getRegister_date() != null) existing.setRegister_date(contractorVo.getRegister_date());
+
+            Contractor updated = contractorRepo.save(existing);
+            return ContractorMapper.mapToVo(updated);
+        }).orElse(null);
+    }
+
+    // Get all contractors (VO)
+    public List<ContractorVo> getAllContractorsVo() {
+        return contractorRepo.findAll().stream()
+                .map(ContractorMapper::mapToVo)
+                .collect(Collectors.toList());
+    }
+
+    // Get contractor by ID (VO)
+    public ContractorVo getContractorVoById(int id) {
+        return contractorRepo.findById(id)
+                .map(ContractorMapper::mapToVo)
+                .orElse(null);
+    }
+
+    // Delete contractor
+    public void deleteContractorById(int id) {
+        contractorRepo.deleteById(id);
+    }
 }

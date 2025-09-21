@@ -1,73 +1,46 @@
 package com.demo.controller;
-import com.demo.DTO.Contract;
+
+import com.demo.VO.ContractVo;
 import com.demo.service.ContractService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/contracts")
 public class ContractController {
+
     @Autowired
     private ContractService service;
-    @Autowired
-    private MessageSource messageSource;
-    //Get Contracts
-    @GetMapping
-    public List<Contract> getAllContracts(){
-        return service.getAllContract();
-    }
-    //Get Contract
-    @GetMapping("/{id}")
-    public Contract getContract(@PathVariable int id){
-        return service.getContractById(id);
-    }
-    //Add Contract
-    @PostMapping
-    public ResponseEntity<?> addContract(@RequestBody Contract contract, @RequestHeader(name = "Accept-Language",required = false)Locale locale){
-        service.addContract(contract);
-        String message=messageSource.getMessage("contract.created",null,locale);
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", message);
-        response.put("contract",contract);
-        return ResponseEntity.ok(response);
 
+    @GetMapping
+    public ResponseEntity<List<ContractVo>> getAllContracts() {
+        return ResponseEntity.ok(service.getAllContractsVo());
     }
-    //Delete Contract
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteContract(@PathVariable int id,@RequestHeader(name = "Accept-language",required = false)Locale locale){
-        service.deleteContractById(id);
-        String message=messageSource.getMessage("contract.deleted",null,locale);
-        return ResponseEntity.ok(message);
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ContractVo> getContractById(@PathVariable int id) {
+        ContractVo contractVo = service.getContractVoById(id);
+        if (contractVo == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(contractVo);
     }
-    //Update Contract
+
+    @PostMapping
+    public ResponseEntity<ContractVo> addContract(@RequestBody ContractVo contractVo) {
+        return ResponseEntity.ok(service.addContractUserFriendly(contractVo));
+    }
+
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateContract(@PathVariable int id, @RequestBody Contract updatedContract,@RequestHeader(name = "Accept-Language",required = false)Locale locale) {
-        Contract contract = service.updateContractById(id, updatedContract);
-        String message=messageSource.getMessage("contract.updated",null,locale);
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", message);
-        response.put("contract", contract);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<ContractVo> updateContract(@PathVariable int id, @RequestBody ContractVo contractVo) {
+        return ResponseEntity.ok(service.updateContractUserFriendly(id, contractVo));
     }
-    @DeleteMapping("/list")
-    public ResponseEntity<String> deleteContracts(@RequestBody List<Integer> contracts,@RequestHeader(name="Accept-Language",required = false)Locale locale){
-        service.deleteContractsByIds(contracts);
-        String message=messageSource.getMessage("contract.deleted",null,locale);
-        return ResponseEntity.ok(message);
-    }
-    @DeleteMapping("/soft-delete/{id}")
-    public ResponseEntity<String> softDeleteContract(@PathVariable int id,@RequestHeader(name = "Accept-Language",required = false)Locale locale) {
-        service.softDeleteContract(id);
-        String message=messageSource.getMessage("contract.deleted",null,locale);
-        return ResponseEntity.ok(message);
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteContract(@PathVariable int id) {
+        service.deleteContractById(id);
+        return ResponseEntity.ok("Contract deleted successfully");
     }
 }
+

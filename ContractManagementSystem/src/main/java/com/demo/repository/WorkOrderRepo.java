@@ -9,5 +9,4 @@ import java.util.List;
 
 @Repository
 public interface WorkOrderRepo extends JpaRepository<WorkOrder,Integer> {
-    List<WorkOrder> findByIsDeletedFalse(); // Fetch only non-deleted contracts
 }

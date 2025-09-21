@@ -57,16 +57,5 @@ public class BillGeneratorService {
     public void deleteBillsByIds(List<Integer> billIDs){
         billGeneratorRepo.deleteAllById(billIDs);
     }
-    public void softDeleteBill(int id){
-        Optional<BillGenerator> bill=billGeneratorRepo.findById(id);
-        if(bill.isPresent()){
-            BillGenerator existingBill=bill.get();
-            existingBill.setDeleted(true);
-            existingBill.setDeletedAt(LocalDateTime.now());
-            billGeneratorRepo.save(existingBill);
-        }
-        else{
-            throw new RuntimeException("Bill Not Found");
-        }
-    }
+
 }

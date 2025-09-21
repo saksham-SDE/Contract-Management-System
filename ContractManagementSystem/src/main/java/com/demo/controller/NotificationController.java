@@ -63,11 +63,5 @@ public class NotificationController {
         String message=messageSource.getMessage("notification.deleted",null,locale);
         return ResponseEntity.ok(message);
     }
-    @DeleteMapping("/soft-delete/{id}")
-    public ResponseEntity<String > softDeleteNotification(@PathVariable int id, @RequestHeader(name = "Accept-Language",required = false)Locale locale){
-        service.softDeleteNotification(id);
-        String message=messageSource.getMessage("notification.deleted",null,locale);
-        return ResponseEntity.ok(message);
-    }
 
 }

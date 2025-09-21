@@ -17,7 +17,7 @@ public class Employee {
     private String e_designation;
     private String e_email_id;
     private String e_contact_no;
-    private boolean isDeleted = false; // Soft delete flag
+
 
     private LocalDateTime deletedAt; // Timestamp of deletion
 
@@ -69,13 +69,6 @@ public class Employee {
         this.e_contact_no = e_contact_no;
     }
 
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
-    }
 
     public LocalDateTime getDeletedAt() {
         return deletedAt;
@@ -94,7 +87,6 @@ public class Employee {
                 ", e_designation='" + e_designation + '\'' +
                 ", e_email_id='" + e_email_id + '\'' +
                 ", e_contact_no='" + e_contact_no + '\'' +
-                ", isDeleted=" + isDeleted +
                 ", deletedAt=" + deletedAt +
                 '}';
     }

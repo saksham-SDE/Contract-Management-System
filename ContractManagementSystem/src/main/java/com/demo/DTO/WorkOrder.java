@@ -18,7 +18,6 @@ public class WorkOrder {
     private String w_status;
     private String w_cost;
     private int contractor_id;
-    private boolean isDeleted = false; // Soft delete flag
 
     private LocalDateTime deletedAt; // Timestamp of deletion
 
@@ -70,14 +69,6 @@ public class WorkOrder {
         this.contractor_id = contractor_id;
     }
 
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
-    }
-
     public LocalDateTime getDeletedAt() {
         return deletedAt;
     }
@@ -95,7 +86,6 @@ public class WorkOrder {
                 ", w_status='" + w_status + '\'' +
                 ", w_cost='" + w_cost + '\'' +
                 ", contractor_id=" + contractor_id +
-                ", isDeleted=" + isDeleted +
                 ", deletedAt=" + deletedAt +
                 '}';
     }

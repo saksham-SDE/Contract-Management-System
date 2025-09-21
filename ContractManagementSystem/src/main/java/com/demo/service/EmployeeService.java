@@ -54,17 +54,6 @@ public class EmployeeService {
     public void deleteEmployeesByIDs(List<Integer> employeeIDs){
         employeeRepo.deleteAllById(employeeIDs);
     }
-    public void softDeleteEmployee(int id){
-        Optional<Employee> employee=employeeRepo.findById(id);
-        if(employee.isPresent()){
-            Employee existingEmployee=employee.get();
-            existingEmployee.setDeleted(true);
-            existingEmployee.setDeletedAt(LocalDateTime.now());
-            employeeRepo.save(existingEmployee);
-        }
-        else {
-            throw new RuntimeException("Employee Not Found");
-        }
-    }
+
 
 }

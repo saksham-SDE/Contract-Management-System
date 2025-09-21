@@ -59,12 +59,7 @@ public class DepartmentController {
         String message=messageSource.getMessage("department.deleted",null,locale);
         return ResponseEntity.ok(message);
     }
-    @DeleteMapping("/soft-delete/{id}")
-    public ResponseEntity<String> softDeleteDepartment(@PathVariable int id,@RequestHeader(name="Accept-Language",required = false)Locale locale){
-        service.softDeleteDepartment(id);
-        String message=messageSource.getMessage("department.deleted",null,locale);
-        return ResponseEntity.ok(message);
-    }
+
 }
 
 

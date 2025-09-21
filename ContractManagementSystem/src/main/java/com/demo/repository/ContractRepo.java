@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface ContractRepo extends JpaRepository<Contract,Integer> {
-    List<Contract> findByIsDeletedFalse(); // Fetch only non-deleted contracts
+
 }
