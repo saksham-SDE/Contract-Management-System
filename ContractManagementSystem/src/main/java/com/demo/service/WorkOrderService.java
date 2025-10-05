@@ -53,7 +53,7 @@ public class WorkOrderService {
         w.setW_status(vo.getW_status());
         w.setW_cost(vo.getW_cost());
 
-        Integer cId = getContractIdByName(vo.getContract_name());
+        Integer cId = getContractIdByName(vo.getProject_name());
         Integer contractorId = getContractorIdByName(vo.getContractor_name());
 
         if (cId == null || contractorId == null) {
@@ -78,8 +78,8 @@ public class WorkOrderService {
             if (vo.getW_status() != null) w.setW_status(vo.getW_status());
             if (vo.getW_cost() != null) w.setW_cost(vo.getW_cost());
 
-            if (vo.getContract_name() != null) {
-                Integer cId = getContractIdByName(vo.getContract_name());
+            if (vo.getProject_name() != null) {
+                Integer cId = getContractIdByName(vo.getProject_name());
                 if (cId != null) w.setC_id(cId);
             }
 

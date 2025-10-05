@@ -1,53 +1,59 @@
 package com.demo.service;
 
 import com.demo.DTO.Department;
+import com.demo.VO.DepartmentVo;
 import com.demo.repository.DepartmentRepo;
+import com.demo.utility.DepartmentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DepartmentService {
+
     @Autowired
     private DepartmentRepo departmentRepo;
-    //Retrieve all departments from the database
-    public List<Department> getAllDepartment(){
-        return departmentRepo.findAll();
-    }
-    //Retrieve department by id from the database
-    public Department getDepartmentById(int id){
 
-        return departmentRepo.findById(id).orElse(null);
+    // Get all Departments (VO)
+    public List<DepartmentVo> getAllDepartmentsVo() {
+        return departmentRepo.findAll().stream()
+                .map(DepartmentMapper::mapToVo)
+                .collect(Collectors.toList());
     }
-    //Add new department to the database
-    public Department addDepartment(Department department){
-        return departmentRepo.save(department);
+
+    // Get Department by ID (VO)
+    public DepartmentVo getDepartmentVoById(int id) {
+        return departmentRepo.findById(id)
+                .map(DepartmentMapper::mapToVo)
+                .orElse(null);
     }
-    //Delete the department by id from the database
-    public void deleteDepartmentById(int id){
+
+    // Add Department (VO)
+    public DepartmentVo addDepartmentVo(DepartmentVo vo) {
+        Department saved = departmentRepo.save(DepartmentMapper.mapToEntity(vo));
+        return DepartmentMapper.mapToVo(saved);
+    }
+
+    // Update Department (VO)
+    public DepartmentVo updateDepartmentVo(int id, DepartmentVo vo) {
+        return departmentRepo.findById(id).map(department -> {
+            if (vo.getDep_name() != null) department.setDep_name(vo.getDep_name());
+            if (vo.getDescription() != null) department.setDescription(vo.getDescription());
+            if (vo.getDep_address() != null) department.setDep_address(vo.getDep_address());
+            Department updated = departmentRepo.save(department);
+            return DepartmentMapper.mapToVo(updated);
+        }).orElse(null);
+    }
+
+    // Delete Department
+    public void deleteDepartmentById(int id) {
         departmentRepo.deleteById(id);
     }
-    //Update department details by id in database
-    public Department updateDepartmentById(int id , Department updatedDepartment){
-        return departmentRepo.findById(id)
-                .map(department -> {
-                    if(updatedDepartment.getDep_name()!=null){
-                    department.setDep_name(updatedDepartment.getDep_name());
-                    }
-                    if(updatedDepartment.getDep_address()!=null) {
-                        department.setDep_address(updatedDepartment.getDep_address());
-                    }
-                    if(updatedDepartment.getDescription()!=null){
-                        department.setDescription(updatedDepartment.getDescription());
-                    }
-                    return departmentRepo.save(department);
-                }).orElse(null);
-    }
-    public void deleteDepartmentByIDs(List<Integer> departmentIDs){
-        departmentRepo.deleteAllById(departmentIDs);
-    }
 
+    // Delete multiple Departments
+    public void deleteDepartmentsByIds(List<Integer> ids) {
+        departmentRepo.deleteAllById(ids);
+    }
 }

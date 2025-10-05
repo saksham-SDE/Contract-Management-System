@@ -1,65 +1,58 @@
 package com.demo.controller;
 
-import com.demo.DTO.Department;
+import com.demo.VO.DepartmentVo;
 import com.demo.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/departments")
 public class DepartmentController {
+
     @Autowired
     private DepartmentService service;
-    @Autowired
-    private MessageSource messageSource;
-    //Get Departments
+
+    // Get all
     @GetMapping
-    public List<Department> getAllDepartments(){
-        return service.getAllDepartment();
+    public ResponseEntity<List<DepartmentVo>> getAllDepartments() {
+        return ResponseEntity.ok(service.getAllDepartmentsVo());
     }
-    //Get Department
+
+    // Get by ID
     @GetMapping("/{id}")
-    public Department getDepartment(@PathVariable int id){
-        return service.getDepartmentById(id);
+    public ResponseEntity<DepartmentVo> getDepartment(@PathVariable int id) {
+        DepartmentVo vo = service.getDepartmentVoById(id);
+        return vo != null ? ResponseEntity.ok(vo) : ResponseEntity.notFound().build();
     }
-    //Add New Department
+
+    // Add
     @PostMapping
-    public ResponseEntity<?> addDepartment(@RequestBody Department department, @RequestHeader(name="Accept-Language",required = false) Locale locale){
-        service.addDepartment(department);
-        String message=messageSource.getMessage("department.created",null,locale);
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", message);
-        response.put("department", department);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<DepartmentVo> addDepartment(@RequestBody DepartmentVo vo) {
+        DepartmentVo created = service.addDepartmentVo(vo);
+        return ResponseEntity.ok(created);
     }
-    //Delete Department
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteDepartment(@PathVariable int id,@RequestHeader(name="Accept-Language",required = false)Locale locale){
-        service.deleteDepartmentById(id);
-        String message=messageSource.getMessage("department.deleted",null,locale);
-        return ResponseEntity.ok(message);
-    }
-    //Update Department Details
+
+    // Update
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateDepartment(@PathVariable int id, @RequestBody Department department,@RequestHeader(name="Accept-Language",required = false)Locale locale){
-        service.updateDepartmentById(id, department);
-        String message=messageSource.getMessage("department.updated",null,locale);
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", message);
-        response.put("department", department);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<DepartmentVo> updateDepartment(@PathVariable int id, @RequestBody DepartmentVo vo) {
+        DepartmentVo updated = service.updateDepartmentVo(id, vo);
+        return updated != null ? ResponseEntity.ok(updated) : ResponseEntity.notFound().build();
     }
+
+    // Delete
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteDepartment(@PathVariable int id) {
+        service.deleteDepartmentById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    // Delete multiple
     @DeleteMapping("/list")
-    public ResponseEntity<?> deleteDepartments(List<Integer> departments,@RequestHeader(name="Accept-Language",required = false)Locale locale){
-        service.deleteDepartmentByIDs(departments);
-        String message=messageSource.getMessage("department.deleted",null,locale);
-        return ResponseEntity.ok(message);
+    public ResponseEntity<Void> deleteDepartments(@RequestBody List<Integer> ids) {
+        service.deleteDepartmentsByIds(ids);
+        return ResponseEntity.noContent().build();
     }
-
 }
-
-

@@ -3,22 +3,21 @@ package com.demo.VO;
 import java.time.LocalDate;
 
 public class WorkOrderVo {
+
     private int w_id;
-    private int c_id;               // optional: backend resolves when adding
-    private String contract_name;   // human-friendly
+    private String project_name;   // use project_name instead of c_id
     private LocalDate w_issued_date;
     private String w_status;
     private String w_cost;
-    private int contractor_id;      // optional
+    private int contractor_id;
     private String contractor_name; // human-friendly
 
     public WorkOrderVo() {}
 
-    public WorkOrderVo(int w_id, int c_id, String contract_name, LocalDate w_issued_date,
+    public WorkOrderVo(int w_id, String project_name, LocalDate w_issued_date,
                        String w_status, String w_cost, int contractor_id, String contractor_name) {
         this.w_id = w_id;
-        this.c_id = c_id;
-        this.contract_name = contract_name;
+        this.project_name = project_name;
         this.w_issued_date = w_issued_date;
         this.w_status = w_status;
         this.w_cost = w_cost;
@@ -26,13 +25,11 @@ public class WorkOrderVo {
         this.contractor_name = contractor_name;
     }
 
-    // Getters & setters
+    // Getters & Setters
     public int getW_id() { return w_id; }
     public void setW_id(int w_id) { this.w_id = w_id; }
-    public int getC_id() { return c_id; }
-    public void setC_id(int c_id) { this.c_id = c_id; }
-    public String getContract_name() { return contract_name; }
-    public void setContract_name(String contract_name) { this.contract_name = contract_name; }
+    public String getProject_name() { return project_name; }
+    public void setProject_name(String project_name) { this.project_name = project_name; }
     public LocalDate getW_issued_date() { return w_issued_date; }
     public void setW_issued_date(LocalDate w_issued_date) { this.w_issued_date = w_issued_date; }
     public String getW_status() { return w_status; }
@@ -44,4 +41,3 @@ public class WorkOrderVo {
     public String getContractor_name() { return contractor_name; }
     public void setContractor_name(String contractor_name) { this.contractor_name = contractor_name; }
 }
-
