@@ -63,4 +63,9 @@ public class PaymentController {
         String message=messageSource.getMessage("payment.deleted",null,locale);
         return ResponseEntity.ok(message);
     }
+    @GetMapping("/pending/count")
+    public ResponseEntity<Long> getPendingPaymentsCount() {
+        return ResponseEntity.ok(service.getPendingPaymentsCount());
+    }
+
 }

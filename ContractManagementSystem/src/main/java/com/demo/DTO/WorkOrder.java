@@ -1,72 +1,74 @@
 package com.demo.DTO;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
+import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
 public class WorkOrder {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int w_id;
-    private int c_id;
-    private LocalDate w_issued_date;
-    private String w_status;
-    private String w_cost;
-    private int contractor_id;
+    private int wId;
+
+    @Column(name = "c_id")
+    private int cId;
+
+    private LocalDate wIssuedDate;
+    private String wStatus;
+    private String wCost;
+
+    @Column(name = "contractor_id")
+    private int contractorId;
 
     private LocalDateTime deletedAt; // Timestamp of deletion
 
-    public int getW_id() {
-        return w_id;
+    public int getWId() {
+        return wId;
     }
 
-    public void setW_id(int w_id) {
-        this.w_id = w_id;
+    public void setWId(int wId) {
+        this.wId = wId;
     }
 
-    public int getC_id() {
-        return c_id;
+    public int getCId() {
+        return cId;
     }
 
-    public void setC_id(int c_id) {
-        this.c_id = c_id;
+    public void setCId(int cId) {
+        this.cId = cId;
     }
 
-    public LocalDate getW_issued_date() {
-        return w_issued_date;
+    public LocalDate getWIssuedDate() {
+        return wIssuedDate;
     }
 
-    public void setW_issued_date(LocalDate w_issued_date) {
-        this.w_issued_date = w_issued_date;
+    public void setWIssuedDate(LocalDate wIssuedDate) {
+        this.wIssuedDate = wIssuedDate;
     }
 
-    public String getW_status() {
-        return w_status;
+    public String getWStatus() {
+        return wStatus;
     }
 
-    public void setW_status(String w_status) {
-        this.w_status = w_status;
+    public void setWStatus(String wStatus) {
+        this.wStatus = wStatus;
     }
 
-    public String getW_cost() {
-        return w_cost;
+    public String getWCost() {
+        return wCost;
     }
 
-    public void setW_cost(String w_cost) {
-        this.w_cost = w_cost;
+    public void setWCost(String wCost) {
+        this.wCost = wCost;
     }
 
-    public int getContractor_id() {
-        return contractor_id;
+    public int getContractorId() {
+        return contractorId;
     }
 
-    public void setContractor_id(int contractor_id) {
-        this.contractor_id = contractor_id;
+    public void setContractorId(int contractorId) {
+        this.contractorId = contractorId;
     }
 
     public LocalDateTime getDeletedAt() {
@@ -80,12 +82,12 @@ public class WorkOrder {
     @Override
     public String toString() {
         return "WorkOrder{" +
-                "w_id=" + w_id +
-                ", c_id=" + c_id +
-                ", w_issued_date=" + w_issued_date +
-                ", w_status='" + w_status + '\'' +
-                ", w_cost='" + w_cost + '\'' +
-                ", contractor_id=" + contractor_id +
+                "wId=" + wId +
+                ", cId=" + cId +
+                ", wIssuedDate=" + wIssuedDate +
+                ", wStatus='" + wStatus + '\'' +
+                ", wCost='" + wCost + '\'' +
+                ", contractorId=" + contractorId +
                 ", deletedAt=" + deletedAt +
                 '}';
     }

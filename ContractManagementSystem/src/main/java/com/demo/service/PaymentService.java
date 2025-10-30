@@ -42,8 +42,8 @@ public class PaymentService {
                     if (updatedPayment.getAmount() != null) {
                         payment.setAmount(updatedPayment.getAmount());
                     }
-                    if (updatedPayment.getP_status() != null) {
-                        payment.setP_status(updatedPayment.getP_status());
+                    if (updatedPayment.getStatus() != null) {
+                        payment.setStatus(updatedPayment.getStatus());
                     }
                     if (updatedPayment.getP_time() != null) {
                         payment.setP_time(updatedPayment.getP_time());
@@ -56,5 +56,8 @@ public class PaymentService {
     }
 
 
+    public long getPendingPaymentsCount() {
+        return paymentRepo.countByStatus("Unpaid");
+    }
 
 }

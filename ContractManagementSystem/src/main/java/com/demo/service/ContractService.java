@@ -153,4 +153,8 @@ public class ContractService {
     public void deleteContractById(int id) {
         contractRepo.deleteById(id);
     }
+    public long getContractCount() {
+        return contractRepo.count();
+    }
+
 }

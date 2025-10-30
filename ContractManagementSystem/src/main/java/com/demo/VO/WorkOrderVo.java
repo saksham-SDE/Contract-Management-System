@@ -5,12 +5,12 @@ import java.time.LocalDate;
 public class WorkOrderVo {
 
     private int w_id;
-    private String project_name;   // use project_name instead of c_id
+    private String project_name;
     private LocalDate w_issued_date;
     private String w_status;
     private String w_cost;
     private int contractor_id;
-    private String contractor_name; // human-friendly
+    private String contractor_name;
 
     public WorkOrderVo() {}
 
@@ -25,7 +25,7 @@ public class WorkOrderVo {
         this.contractor_name = contractor_name;
     }
 
-    // Getters & Setters
+    // Getters and Setters
     public int getW_id() { return w_id; }
     public void setW_id(int w_id) { this.w_id = w_id; }
     public String getProject_name() { return project_name; }

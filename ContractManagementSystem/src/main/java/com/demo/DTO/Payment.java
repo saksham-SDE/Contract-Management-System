@@ -1,9 +1,6 @@
 package com.demo.DTO;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -16,7 +13,8 @@ public class Payment {
     private int c_id;
     private int bill_id;
     private BigDecimal amount;
-    private String p_status;
+    @Column(name = "p_status")
+    private String status;
     private LocalDateTime p_time;
 
     private LocalDateTime deletedAt; // Timestamp of deletion
@@ -53,12 +51,12 @@ public class Payment {
         this.amount = amount;
     }
 
-    public String getP_status() {
-        return p_status;
+    public String getStatus() {
+        return status;
     }
 
-    public void setP_status(String p_status) {
-        this.p_status = p_status;
+    public void setStatus(String pStatus) {
+        this.status = pStatus;
     }
 
     public LocalDateTime getP_time() {
@@ -85,7 +83,7 @@ public class Payment {
                 ", c_id=" + c_id +
                 ", bill_id=" + bill_id +
                 ", amount=" + amount +
-                ", p_status='" + p_status + '\'' +
+                ", status='" + status + '\'' +
                 ", p_time=" + p_time +
                 ", deletedAt=" + deletedAt +
                 '}';

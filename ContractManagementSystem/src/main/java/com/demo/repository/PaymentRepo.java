@@ -9,5 +9,6 @@ import java.util.List;
 
 @Repository
 public interface PaymentRepo extends JpaRepository<Payment,Integer> {
+    long countByStatus(String status);
 
 }

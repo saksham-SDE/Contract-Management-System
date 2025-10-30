@@ -56,4 +56,8 @@ public class ContractorService {
     public void deleteContractorById(int id) {
         contractorRepo.deleteById(id);
     }
+    public long getContractorCount() {
+        return contractorRepo.count();
+    }
+
 }

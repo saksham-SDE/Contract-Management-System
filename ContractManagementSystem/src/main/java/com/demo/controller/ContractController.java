@@ -42,5 +42,10 @@ public class ContractController {
         service.deleteContractById(id);
         return ResponseEntity.ok("Contract deleted successfully");
     }
+    @GetMapping("/count")
+    public ResponseEntity<Long> getContractCount() {
+        return ResponseEntity.ok(service.getContractCount());
+    }
+
 }
 

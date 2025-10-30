@@ -26,7 +26,6 @@ public class WorkOrderService {
     @Autowired
     private ContractorRepo contractorRepo;
 
-    // resolve contract id by project name
     private Integer getContractIdByName(String name) {
         if (name == null || name.isEmpty()) return null;
         return contractRepo.findAll().stream()
@@ -36,7 +35,6 @@ public class WorkOrderService {
                 .orElse(null);
     }
 
-    // resolve contractor id by name
     private Integer getContractorIdByName(String name) {
         if (name == null || name.isEmpty()) return null;
         return contractorRepo.findAll().stream()
@@ -46,12 +44,11 @@ public class WorkOrderService {
                 .orElse(null);
     }
 
-    // Add work order using human-friendly VO
     public WorkOrderVo addWorkOrderUserFriendly(WorkOrderVo vo) {
         WorkOrder w = new WorkOrder();
-        w.setW_issued_date(vo.getW_issued_date());
-        w.setW_status(vo.getW_status());
-        w.setW_cost(vo.getW_cost());
+        w.setWIssuedDate(vo.getW_issued_date());
+        w.setWStatus(vo.getW_status());
+        w.setWCost(vo.getW_cost());
 
         Integer cId = getContractIdByName(vo.getProject_name());
         Integer contractorId = getContractorIdByName(vo.getContractor_name());
@@ -60,64 +57,74 @@ public class WorkOrderService {
             throw new RuntimeException("Contract or Contractor not found");
         }
 
-        w.setC_id(cId);
-        w.setContractor_id(contractorId);
+        w.setCId(cId);
+        w.setContractorId(contractorId);
 
         WorkOrder saved = workOrderRepo.save(w);
 
-        Contract contract = contractRepo.findById(saved.getC_id()).orElse(null);
-        Contractor contractor = contractorRepo.findById(saved.getContractor_id()).orElse(null);
+        Contract contract = contractRepo.findById(saved.getCId()).orElse(null);
+        Contractor contractor = contractorRepo.findById(saved.getContractorId()).orElse(null);
 
         return WorkOrderMapper.mapWorkOrderToVo(saved, contract, contractor);
     }
 
-    // Update user-friendly
     public WorkOrderVo updateWorkOrderUserFriendly(int id, WorkOrderVo vo) {
         return workOrderRepo.findById(id).map(w -> {
-            if (vo.getW_issued_date() != null) w.setW_issued_date(vo.getW_issued_date());
-            if (vo.getW_status() != null) w.setW_status(vo.getW_status());
-            if (vo.getW_cost() != null) w.setW_cost(vo.getW_cost());
+            if (vo.getW_issued_date() != null) w.setWIssuedDate(vo.getW_issued_date());
+            if (vo.getW_status() != null) w.setWStatus(vo.getW_status());
+            if (vo.getW_cost() != null) w.setWCost(vo.getW_cost());
 
             if (vo.getProject_name() != null) {
                 Integer cId = getContractIdByName(vo.getProject_name());
-                if (cId != null) w.setC_id(cId);
+                if (cId != null) w.setCId(cId);
             }
 
             if (vo.getContractor_name() != null) {
                 Integer contractorId = getContractorIdByName(vo.getContractor_name());
-                if (contractorId != null) w.setContractor_id(contractorId);
+                if (contractorId != null) w.setContractorId(contractorId);
             }
 
             WorkOrder updated = workOrderRepo.save(w);
-            Contract contract = contractRepo.findById(updated.getC_id()).orElse(null);
-            Contractor contractor = contractorRepo.findById(updated.getContractor_id()).orElse(null);
+            Contract contract = contractRepo.findById(updated.getCId()).orElse(null);
+            Contractor contractor = contractorRepo.findById(updated.getContractorId()).orElse(null);
 
             return WorkOrderMapper.mapWorkOrderToVo(updated, contract, contractor);
         }).orElse(null);
     }
 
-    // Get all VO
     public List<WorkOrderVo> getAllWorkOrdersVo() {
         return workOrderRepo.findAll().stream()
                 .map(w -> {
-                    Contract contract = contractRepo.findById(w.getC_id()).orElse(null);
-                    Contractor contractor = contractorRepo.findById(w.getContractor_id()).orElse(null);
+                    Contract contract = contractRepo.findById(w.getCId()).orElse(null);
+                    Contractor contractor = contractorRepo.findById(w.getContractorId()).orElse(null);
                     return WorkOrderMapper.mapWorkOrderToVo(w, contract, contractor);
                 })
                 .collect(Collectors.toList());
     }
 
-    // Get by id VO
     public WorkOrderVo getWorkOrderVoById(int id) {
         WorkOrder w = workOrderRepo.findById(id).orElse(null);
         if (w == null) return null;
-        Contract contract = contractRepo.findById(w.getC_id()).orElse(null);
-        Contractor contractor = contractorRepo.findById(w.getContractor_id()).orElse(null);
+        Contract contract = contractRepo.findById(w.getCId()).orElse(null);
+        Contractor contractor = contractorRepo.findById(w.getContractorId()).orElse(null);
         return WorkOrderMapper.mapWorkOrderToVo(w, contract, contractor);
     }
 
-    // Raw delete
     public void deleteWorkOrderById(int id) {
         workOrderRepo.deleteById(id);
     }
+
+    public List<WorkOrderVo> getWorkOrdersForContractor(int contractorId) {
+        return workOrderRepo.findByContractorId(contractorId).stream()
+                .map(w -> {
+                    Contract contract = contractRepo.findById(w.getCId()).orElse(null);
+                    Contractor contractor = contractorRepo.findById(w.getContractorId()).orElse(null);
+                    return WorkOrderMapper.mapWorkOrderToVo(w, contract, contractor);
+                })
+                .collect(Collectors.toList());
+    }
+    public long getWorkOrderCount() {
+        return workOrderRepo.count();
+    }
+
 }

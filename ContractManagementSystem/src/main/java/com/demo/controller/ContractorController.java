@@ -47,4 +47,9 @@ public class ContractorController {
         service.deleteContractorById(id);
         return ResponseEntity.noContent().build();
     }
+    @GetMapping("/count")
+    public ResponseEntity<Long> getContractorCount() {
+        return ResponseEntity.ok(service.getContractorCount());
+    }
+
 }
