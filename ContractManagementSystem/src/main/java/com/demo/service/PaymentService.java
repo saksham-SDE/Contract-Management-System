@@ -1,7 +1,9 @@
 package com.demo.service;
 
 import com.demo.DTO.Payment;
+import com.demo.VO.PaymentVo;
 import com.demo.repository.PaymentRepo;
+import com.demo.utility.PaymentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +16,21 @@ public class PaymentService {
     @Autowired
     private PaymentRepo paymentRepo;
     //Retrieves all payments from the database
-    public List<Payment> getAllPayment(){
-        return paymentRepo.findAll();
+    @Autowired
+    private PaymentMapper paymentMapper;
+
+    public List<PaymentVo> getAllPayments() {
+        return paymentRepo.findAll().stream()
+                .map(paymentMapper::convertToVO)
+                .toList();
     }
-    //Retrieve payment by id from the database
-    public Payment getPaymentById(int id){
-        return paymentRepo.findById(id).orElse(null);
+
+    public PaymentVo getPaymentById(int id) {
+        return paymentRepo.findById(id)
+                .map(paymentMapper::convertToVO)
+                .orElse(null);
     }
+
     //Add payment to the database
     public Payment addPayment(Payment payment){
         return paymentRepo.save(payment);

@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface ContractRepo extends JpaRepository<Contract,Integer> {
+    List<Contract> findByContractorId(int contractor_id);
 
 }

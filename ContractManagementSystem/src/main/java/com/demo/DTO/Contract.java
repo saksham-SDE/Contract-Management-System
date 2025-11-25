@@ -1,9 +1,6 @@
 package com.demo.DTO;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -21,7 +18,8 @@ public class Contract {
     private LocalDate contract_end_date;
     private BigDecimal contract_cost;
     private String contract_status;
-    private int contractor_id;
+    @Column(name = "contractor_id")
+    private int contractorId;
 
 
     private LocalDateTime deletedAt; // Timestamp of deletion
@@ -90,14 +88,13 @@ public class Contract {
         this.contract_status = contract_status;
     }
 
-    public int getContractor_id() {
-        return contractor_id;
+    public int getContractorId() {
+        return contractorId;
     }
 
-    public void setContractor_id(int contractor_id) {
-        this.contractor_id = contractor_id;
+    public void setContractorId(int contractorId) {
+        this.contractorId = contractorId;
     }
-
 
     public LocalDateTime getDeletedAt() {
         return deletedAt;
@@ -118,7 +115,7 @@ public class Contract {
                 ", contract_end_date=" + contract_end_date +
                 ", contract_cost=" + contract_cost +
                 ", contract_status='" + contract_status + '\'' +
-                ", contractor_id=" + contractor_id +
+                ", contractor_id=" + contractorId +
                 ", deletedAt=" + deletedAt +
                 '}';
     }

@@ -79,13 +79,13 @@ public class ContractService {
 
         contract.setE_id(eId);
         contract.setN_id(nId);
-        contract.setContractor_id(contractorId);
+        contract.setContractorId(contractorId);
 
         Contract saved = contractRepo.save(contract);
 
         Employee emp = empRepo.findById(saved.getE_id()).orElse(null);
         Notification not = notiRepo.findById(saved.getN_id()).orElse(null);
-        Contractor contractor = contractorRepo.findById(saved.getContractor_id()).orElse(null);
+        Contractor contractor = contractorRepo.findById(saved.getContractorId()).orElse(null);
 
         return ContractMapper.mapContractToVo(saved, emp, not, contractor);
     }
@@ -112,14 +112,14 @@ public class ContractService {
 
             if (contractVo.getContractor_name() != null) {
                 Integer contractorId = getContractorIdByName(contractVo.getContractor_name());
-                if (contractorId != null) contract.setContractor_id(contractorId);
+                if (contractorId != null) contract.setContractorId(contractorId);
             }
 
             Contract updated = contractRepo.save(contract);
 
             Employee emp = empRepo.findById(updated.getE_id()).orElse(null);
             Notification not = notiRepo.findById(updated.getN_id()).orElse(null);
-            Contractor contractor = contractorRepo.findById(updated.getContractor_id()).orElse(null);
+            Contractor contractor = contractorRepo.findById(updated.getContractorId()).orElse(null);
 
             return ContractMapper.mapContractToVo(updated, emp, not, contractor);
         }).orElse(null);
@@ -131,7 +131,7 @@ public class ContractService {
                 .map(contract -> {
                     Employee emp = empRepo.findById(contract.getE_id()).orElse(null);
                     Notification not = notiRepo.findById(contract.getN_id()).orElse(null);
-                    Contractor contractor = contractorRepo.findById(contract.getContractor_id()).orElse(null);
+                    Contractor contractor = contractorRepo.findById(contract.getContractorId()).orElse(null);
                     return ContractMapper.mapContractToVo(contract, emp, not, contractor);
                 })
                 .collect(Collectors.toList());
@@ -144,7 +144,7 @@ public class ContractService {
 
         Employee emp = empRepo.findById(contract.getE_id()).orElse(null);
         Notification not = notiRepo.findById(contract.getN_id()).orElse(null);
-        Contractor contractor = contractorRepo.findById(contract.getContractor_id()).orElse(null);
+        Contractor contractor = contractorRepo.findById(contract.getContractorId()).orElse(null);
 
         return ContractMapper.mapContractToVo(contract, emp, not, contractor);
     }
@@ -155,6 +155,16 @@ public class ContractService {
     }
     public long getContractCount() {
         return contractRepo.count();
+    }
+    public List<ContractVo> getContractsByContractor(int contractorId) {
+        return contractRepo.findByContractorId(contractorId)
+                .stream()
+                .map(contract -> {
+                    Employee emp = empRepo.findById(contract.getE_id()).orElse(null);
+                    Notification not = notiRepo.findById(contract.getN_id()).orElse(null);
+                    Contractor contractor = contractorRepo.findById(contract.getContractorId()).orElse(null);
+                    return ContractMapper.mapContractToVo(contract, emp, not, contractor);
+                }).collect(Collectors.toList());
     }
 
 }

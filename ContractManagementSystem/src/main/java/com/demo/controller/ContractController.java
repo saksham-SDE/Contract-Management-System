@@ -46,6 +46,10 @@ public class ContractController {
     public ResponseEntity<Long> getContractCount() {
         return ResponseEntity.ok(service.getContractCount());
     }
+    @GetMapping("/assigned/{contractorId}")
+    public ResponseEntity<List<ContractVo>> getContractsByContractor(@PathVariable int contractorId) {
+        return ResponseEntity.ok(service.getContractsByContractor(contractorId));
+    }
 
 }
 

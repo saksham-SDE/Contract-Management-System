@@ -1,6 +1,7 @@
 package com.demo.controller;
 
 import com.demo.DTO.Payment;
+import com.demo.VO.PaymentVo;
 import com.demo.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
@@ -22,14 +23,15 @@ public class PaymentController {
     private MessageSource messageSource;
     //Get Payments
     @GetMapping
-    public List<Payment> getAllPayments(){
-        return service.getAllPayment();
+    public List<PaymentVo> getAllPayments() {
+        return service.getAllPayments();
     }
-    //Get Payment
+
     @GetMapping("/{id}")
-    public Payment getPayment(@PathVariable int id){
+    public PaymentVo getPayment(@PathVariable int id) {
         return service.getPaymentById(id);
     }
+
     //Add New Payment
     @PostMapping
     public ResponseEntity<?> addPayment(@RequestBody Payment payment,@RequestHeader(name="Accept-Language",required = false) Locale locale){
